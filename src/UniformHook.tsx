@@ -267,8 +267,24 @@ export const UniformHook = ({
       const formHasErrors: boolean = validateForm()
 
       if (!formHasErrors && !hasNestedErrors) {
-        const values = multiForm ? formValues : formValues[0]
-        onSubmit ? onSubmit(values) : schema.onSubmit && schema.onSubmit(values)
+        let values = cloneDeep(formValues);
+
+        for (const index in values) {
+          for (let key of Object.keys(schema.inputs)) {
+            if (schema.inputs[key].onSubmit) {
+              values[index][key] =
+                // @ts-ignore its checking if onSubmit function exists  above, but its still failing
+                schema.inputs[key].onSubmit(
+                  values[index][key],
+                  values[index]
+                );
+            }
+          }
+        }
+
+        values = multiForm ? formValues : formValues[0]
+        onSubmit(values)
+        schema.onSubmit && schema.onSubmit(values)
       }
     }}>
       {

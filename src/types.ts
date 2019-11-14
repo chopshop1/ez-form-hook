@@ -79,7 +79,7 @@ export type UniformInput = {
 
 export type UniformHookProps = {
   schema: UniformSchema
-  onSubmit?: (vals: any) => any
+  onSubmit: (vals: any) => any
   onChange?: ({ value, rowValues, values, formIndex }: CallbackArguments) => any
   onBlur?: ({ value, rowValues, values, formIndex }: CallbackArguments) => any
   initialValues?: any

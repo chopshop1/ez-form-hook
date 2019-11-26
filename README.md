@@ -1,6 +1,6 @@
-[![NPM downloads](https://img.shields.io/npm/v/uniform.svg)](https://www.npmjs.com/package/uniform)
-[![NPM downloads](https://img.shields.io/npm/dt/uniform.svg)](https://www.npmjs.com/package/uniform)
-[![NPM downloads](https://img.shields.io/bundlephobia/minzip/uniform)](https://img.shields.io/bundlephobia/minzip/uniform)
+[![NPM downloads](https://img.shields.io/npm/v/react-uniform-hook.svg)](https://www.npmjs.com/package/react-uniform-hook)
+[![NPM downloads](https://img.shields.io/npm/dt/react-uniform-hook.svg)](https://www.npmjs.com/package/react-uniform-hook)
+[![NPM downloads](https://img.shields.io/bundlephobia/minzip/react-uniform-hook)](https://img.shields.io/bundlephobia/minzip/react-uniform-hook)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
@@ -37,7 +37,7 @@ Uniformly generates a form from a schema with on the fly customizability!
 ## Component Example:
 
 ```javascript
-import { Uniform } from "uniform";
+import { Uniform } from "react-uniform-hook";
 const schema = {
   name: {
     label: "name",

@@ -1,7 +1,7 @@
 {
-  "name": "uniform",
-  "version": "0.1.0",
-  "private": true,
+  "name": "react-uniform-hook",
+  "version": "1.0.1",
+  "private": false,
   "dependencies": {},
   "scripts": {
     "start": "react-scripts start",
@@ -47,5 +47,7 @@
     "storybook-dark-mode": "^0.1.9",
     "ts-jest": "^24.1.0",
     "typescript": "^3.6.4"
-  }
+  },
+  "main": "dist/index.js",
+  "typings": "dist/*.d.ts"
 }

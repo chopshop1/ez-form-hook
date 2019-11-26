@@ -24,7 +24,7 @@
     "strict": true,
     "strictNullChecks": true,
     "stripInternal": true,
-    "target": "es5",
+    "target": "es6",
     "noImplicitReturns": false,
     "baseUrl": "."
   },

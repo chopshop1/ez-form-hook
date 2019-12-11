@@ -37,28 +37,30 @@ Uniformly generates a form from a schema with on the fly customizability!
 ## Component Example:
 
 ```javascript
-import { Uniform } from "react-uniform-hook";
+import { UniformHook } from "react-uniform-hook";
 const schema = {
-  name: {
-    label: "name",
-    required: false,
-    type: "text",
-    placeholder: "Whats your name"
-  },
-  age: {
-    label: "Age",
-    required: true,
-    type: "number",
-    placeholder: "Whats your age?"
-  },
-  favoriteColor: {
-    label: "favoriteColor",
-    placeholder: "Favorite color",
-    options: [
-      { value: "green", label: "green" },
-      { value: "red", label: "red" },
-      { value: "blue", label: "blue" }
-    ]
+  inputs: {
+    name: {
+      label: "name",
+      required: false,
+      type: "text",
+      placeholder: "Whats your name"
+    },
+    age: {
+      label: "Age",
+      required: true,
+      type: "number",
+      placeholder: "Whats your age?"
+    },
+    favoriteColor: {
+      label: "favoriteColor",
+      placeholder: "Favorite color",
+      options: [
+        { value: "green", label: "green" },
+        { value: "red", label: "red" },
+        { value: "blue", label: "blue" }
+      ]
+    }
   }
 };
 
@@ -67,7 +69,7 @@ const Form = () => {
     console.log(values);
   };
 
-  const { form } = Uniform({ schema, onSubmit });
+  const { form } = UniformHook({ schema, onSubmit });
 
   return <div>{form}</div>;
 };
@@ -82,7 +84,7 @@ const Form = () => {
   };
   const customSubmitButton = <button type="submit">My Custom Submit</button>;
 
-  const { form, clearForm, addFields, removeFields } = Uniform({
+  const { form, clearForm, addFields, removeFields } = UniformHook({
     schema,
     onSubmit,
     submitButton: customSubmitButton

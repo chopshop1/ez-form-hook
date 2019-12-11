@@ -1,8 +1,8 @@
 import { cleanup, fireEvent, render } from "@testing-library/react";
 import React from "react";
-import { UniformHook } from "../src";
+import { UniformHook } from "../dist";
+import { nestedSchema, testNestedSchema } from "./testNestedSchema";
 import { testSchema, testSchema2, testSchemaInitialValues } from "./testSchema";
-import { testNestedSchema, nestedSchema } from "./testNestedSchema";
 
 afterEach(cleanup);
 

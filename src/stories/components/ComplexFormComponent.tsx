@@ -12,7 +12,7 @@ export const ComplexFormComponent = () => {
     setBg(color)
   }
 
-  const { form } = UniformHook({ schema, onChange })
+  const { form, formValues } = UniformHook({ schema, onChange })
 
   return (
     <div style={{ backgroundColor: bg }}>

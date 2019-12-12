@@ -1,16 +1,16 @@
-export type StringTMap<T> = { [key: string]: T }
+export type tMap<T> = { [key: string]: T }
 
-export type objectKeys = StringTMap<any>;
+export type objectKeys = tMap<any>;
 
 export type UniformSchema = {
   onSubmit?: Function,
-  inputs: StringTMap<UniformInput>;
+  inputs: tMap<UniformInput>;
 }
 
 export type VisibleIfArgs = {
-  value: StringTMap<any>
-  rowValues: StringTMap<any>
-  values: StringTMap<any>
+  value: objectKeys
+  rowValues: objectKeys
+  values: objectKeys
   formIndex: number | string
 }
 
@@ -60,7 +60,7 @@ export type UniformInput = {
   prependHtml?: any; //TODO: type correctly
   appendHtml?: any; //TODO: type correctly
   required?: boolean | Function;
-  functionalComponent?: ({ updateFormValues, inputKey, initialValues, formIndex, value }: FunctionalComponentArguments) => void; //TODO: type correctly
+  functionalComponent?: ({ updateFormValues, inputKey, initialValues, formIndex, value }: FunctionalComponentArguments) => void;
   viewModeClass?: string;
   viewModeComponent?: Function;
   featureFlag?: string;
@@ -79,10 +79,10 @@ export type UniformInput = {
 
 export type UniformHookProps = {
   schema: UniformSchema
-  onSubmit: (vals: any) => any
+  onSubmit?: (vals: objectKeys) => any
   onChange?: ({ value, rowValues, values, formIndex }: CallbackArguments) => any
   onBlur?: ({ value, rowValues, values, formIndex }: CallbackArguments) => any
-  initialValues?: any
+  initialValues?: objectKeys
   validateInitialValues?: boolean
   validateOnChange?: boolean
   viewModeToggled?: boolean
@@ -90,6 +90,6 @@ export type UniformHookProps = {
   submitButton?: JSX.Element
   multiForm?: boolean
   viewModeFallbackText?: string
-  featureFlags?: any
+  featureFlags?: objectKeys
   nestedErrorsManager?: nestedErrorsManager
 }

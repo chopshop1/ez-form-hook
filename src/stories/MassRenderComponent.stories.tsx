@@ -3,6 +3,7 @@ import { cloneDeep } from "src/cloneDeep"
 import { simpleSchema } from "src/stories/data/schema"
 import { UniformSchema } from "src/types"
 import { UniformHook } from "src/UniformHook"
+import { SchemaDoc } from "./components/SchemaDoc"
 
 let count = 250
 let schema: UniformSchema = cloneDeep(simpleSchema)
@@ -22,6 +23,13 @@ export const MassRenderComponent = () => {
       {form}
       <button onClick={addForm}>Add Form</button>
       <button onClick={() => removeForm(formLength)}>Remove Form</button>
+
+      <SchemaDoc schema={schema} />
     </div>
   )
 }
+
+export default {
+  title: 'Mass Render',
+  component: MassRenderComponent,
+};

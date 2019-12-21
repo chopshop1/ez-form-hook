@@ -110,6 +110,7 @@ describe("Uniform Test", () => {
   });
 
   it("resetForm should reset form", async () => {
+    console.log("^^^ IGNORE THE ERRORS ABOUT UNCONTROLLED INPUTS, THEY ARE INTENTIONALLY CAUSED BY THIS TEST ^^^")
     let formVals: any;
     const onSubmit = (vals: any) => {
       formVals = vals;

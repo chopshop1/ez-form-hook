@@ -1,20 +1,11 @@
-import { addParameters, configure, setAddon } from '@storybook/react';
-import JSXAddon from 'storybook-addon-jsx';
-
-
-addParameters({
-  darkMode: {
-    // Override the default dark theme
-    dark: {appBg: 'grey' }
-  }
-});
-setAddon(JSXAddon);
-
+import { configure, addParameters } from '@storybook/react';
+import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
 
 addParameters({
-  jsx: { indent_size: 2 }
+  docs: {
+    container: DocsContainer,
+    page: DocsPage,
+  },
 });
 
-// automatically import all files ending in *.stories.js
-configure(require.context('../src/stories', true, /\.stories\.js$/), module);
-
+configure(require.context('../src/stories', true, /\.stories\.tsx|.mdx$/), module);

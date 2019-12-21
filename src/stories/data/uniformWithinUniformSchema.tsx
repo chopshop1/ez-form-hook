@@ -36,7 +36,7 @@ const petSchema = {
 const PetForm = (props) => {
   const schema: any = cloneDeep(petSchema)
 
-  const { inputs, formReady } = UniformHook({
+  const { inputs, formReady, addForm, removeForm } = UniformHook({
     schema,
     onBlur: ({ rowValues }) => props.updateFormValues(rowValues),
     nestedErrorsManager: props.nestedErrorsManager
@@ -51,10 +51,12 @@ const PetForm = (props) => {
               {inputSet.name.html}
               {inputSet.age.html}
               {inputSet.type.html}
+              <button type="button" onClick={() => removeForm(i)}>Remove Pet</button>
             </div>
           )
         })
       }
+      <button type="button" onClick={addForm}>Add Pet</button>
     </div>
   )
 }

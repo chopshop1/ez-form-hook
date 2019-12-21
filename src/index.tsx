@@ -1,1 +1,1 @@
-export * from "./UniformHook"
+export * from "./UniformHook";

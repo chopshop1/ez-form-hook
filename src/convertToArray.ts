@@ -1,3 +1,3 @@
-export const convertToArray = (vals: object) => {
-  return Array.isArray(vals) ? vals : [vals]
-}
+export const convertToArray = (vals: object, ) => {
+  return Array.isArray(vals) ? vals : [vals];
+};

@@ -11,7 +11,7 @@ export const simpleSchema = {
       },
     },
     selectOne: {
-      label: "select ONe",
+      label: "select One",
       type: "select",
       options: [{ label: "Select One", value: null, selected: true, hidden: true }, { label: "true", value: true }, { label: "false", value: false }]
       

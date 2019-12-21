@@ -40,7 +40,7 @@ export const UniformHook = ({
 
   useEffect(() => {
     generateInputs()
-  }, [formValues, formLength])
+  }, [formValues, formLength, viewMode])
 
   const initForm = async (initFormLength?: number) => {
     let initialFormValues: any = [] // TODO: type correctly
@@ -66,12 +66,14 @@ export const UniformHook = ({
 
   const generateInputs = () => {
     let inputs: any/* TODO: type correctly */ = []
+
     for (let formIndex = 0; formIndex < formLength; formIndex++) {
       inputs.push({})
       for (const inputKey of Object.keys(schema.inputs)) {
         inputs[formIndex][inputKey] = inputGenerator(inputKey, formIndex)
       }
     }
+
     setInputs(inputs)
     setFormReady(true)
   }
@@ -281,9 +283,8 @@ export const UniformHook = ({
             }
           }
         }
-
         values = multiForm ? formValues : formValues[0]
-        onSubmit(values)
+        onSubmit && onSubmit(values)
         schema.onSubmit && schema.onSubmit(values)
       }
     }}>
@@ -292,7 +293,8 @@ export const UniformHook = ({
           Object.keys(input).map((inputKey: any, index: number) => {
             return (
               <div key={input[inputKey].key + index}> {/* TODO: make unique keys */}
-                {input[inputKey].html}
+                {viewMode && input[inputKey].viewMode}
+                {!viewMode && input[inputKey].html}
               </div>
             );
           })
@@ -355,8 +357,8 @@ export const UniformHook = ({
   }
 
   const resetForm = () => {
-    initForm(uniformInitialValues.length)
     setFormLength(uniformInitialValues.length)
+    initForm(uniformInitialValues.length)
   }
 
   const clearForm = () => {

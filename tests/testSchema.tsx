@@ -48,7 +48,8 @@ export const testSchema: UniformSchema = {
       label: "visible if",
       required: false,
       type: "text",
-      placeholder: "visibleIf"
+      placeholder: "visibleIf",
+      untracked: true
     },
     untracked: {
       label: "untracked",

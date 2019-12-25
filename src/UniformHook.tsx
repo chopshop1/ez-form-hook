@@ -11,10 +11,11 @@ export const UniformHook = ({
   onSubmit,
   onChange,
   onBlur,
-  errorClass = "null",
+  errorClass = null,
   featureFlags,
   nestedErrorsManager,
   className,
+  validation,
   initialValues = [],
   validateInitialValues = true,
   validateOnChange = true,
@@ -223,7 +224,7 @@ export const UniformHook = ({
       input.errorComponent({ error: errors[formIndex], errors: errors[formIndex], formIndex })
     ) : (
         <div
-          className={`${inputKey in errors[formIndex] && "uniform-error"} ${errorClass}`}
+          className={`${inputKey in errors[formIndex] ? "uniform-error" : ""} ${errorClass ? errorClass : ""}`}
         >
           {errors[formIndex][inputKey]}
         </div>
@@ -307,7 +308,16 @@ export const UniformHook = ({
     </form>
   );
 
-  const validateInput = (input: any, values: any, formIndex: any, inputKey: string)/* TODO: Type correctly */ => input.validate && input.validate({ value: values[formIndex][inputKey], values: values, rowValues: values[formIndex], formIndex })
+  const validateInput = (input: any, values: any, formIndex: any, inputKey: string)/* TODO: Type correctly */ => {
+    const validationParams = { value: values[formIndex][inputKey], values: values, rowValues: values[formIndex], formIndex }
+
+    if (validation && validation[inputKey]) {
+      return validation[inputKey](validationParams)
+    }
+    if (input.validate) {
+      return input.validate(validationParams)
+    }
+  }
 
   const validateForm = (initialErrors = errors, initialFormValues = formValues) => {
     let tempErrors = [...initialErrors]

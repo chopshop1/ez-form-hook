@@ -92,6 +92,7 @@ export type UniformHookProps = {
   viewModeFallbackText?: string
   featureFlags?: objectKeys
   nestedErrorsManager?: nestedErrorsManager
-  errorClass?: string
+  errorClass?: string | null
   className?: string
+  validation?: tMap<Function>
 }

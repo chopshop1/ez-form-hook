@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render } from "@testing-library/react";
 import React from "react";
-import { UniformHook } from "../dist";
+import { UniformHook } from "../src";
 import { nestedSchema, testNestedSchema } from "./testNestedSchema";
 import { testSchema, testSchema2, testSchemaInitialValues } from "./testSchema";
 
@@ -327,5 +327,17 @@ describe("Uniform Test", () => {
     );
     const component = getByText("i'm a customComponent")
     expect(component).toBeDefined()
+  });
+
+  it("custom validation schema should run, and overwrite schema's validation function", async () => {
+    const { getByText, getByTestId } = await render(
+      <TestingComponent schema={testSchema} validation={{ name: () => "im a new error" }} />
+    );
+
+    const input = getByTestId(testSchema.inputs.name["data-testid"]);
+    fireEvent.change(input, { target: { value: "validate" } });
+    fireEvent.blur(input);
+    const error = getByText("im a new error");
+    expect(error).toBeDefined();
   });
 });

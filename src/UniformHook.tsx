@@ -11,8 +11,10 @@ export const UniformHook = ({
   onSubmit,
   onChange,
   onBlur,
+  errorClass = "null",
   featureFlags,
   nestedErrorsManager,
+  className,
   initialValues = [],
   validateInitialValues = true,
   validateOnChange = true,
@@ -221,9 +223,7 @@ export const UniformHook = ({
       input.errorComponent({ error: errors[formIndex], errors: errors[formIndex], formIndex })
     ) : (
         <div
-          className={`${inputKey in errors[formIndex] && "ez-form-error"} ${
-            input.errorClass ? input.errorClass : ""
-            }`}
+          className={`${inputKey in errors[formIndex] && "uniform-error"} ${errorClass}`}
         >
           {errors[formIndex][inputKey]}
         </div>
@@ -264,30 +264,33 @@ export const UniformHook = ({
   }
 
   const form = (
-    <form onSubmit={(e) => {
-      e.preventDefault()
-      const formHasErrors: boolean = validateForm()
+    <form
+      className={className}
+      onSubmit={(e) => {
+        e.preventDefault()
+        const formHasErrors: boolean = validateForm()
 
-      if (!formHasErrors && !hasNestedErrors) {
-        let values = cloneDeep(formValues);
+        if (!formHasErrors && !hasNestedErrors) {
+          let values = cloneDeep(formValues);
 
-        for (const index in values) {
-          for (let key of Object.keys(schema.inputs)) {
-            if (schema.inputs[key].onSubmit) {
-              values[index][key] =
-                // @ts-ignore its checking if onSubmit function exists  above, but its still failing
-                schema.inputs[key].onSubmit(
-                  values[index][key],
-                  values[index]
-                );
+          for (const index in values) {
+            for (let key of Object.keys(schema.inputs)) {
+              if (schema.inputs[key].onSubmit) {
+                values[index][key] =
+                  // @ts-ignore its checking if onSubmit function exists  above, but its still failing
+                  schema.inputs[key].onSubmit(
+                    values[index][key],
+                    values[index]
+                  );
+              }
             }
           }
+          values = multiForm ? formValues : formValues[0]
+          onSubmit && onSubmit(values)
+          schema.onSubmit && schema.onSubmit(values)
         }
-        values = multiForm ? formValues : formValues[0]
-        onSubmit && onSubmit(values)
-        schema.onSubmit && schema.onSubmit(values)
-      }
-    }}>
+      }}
+    >
       {
         inputs.map((input: any) => (
           Object.keys(input).map((inputKey: any, index: number) => {

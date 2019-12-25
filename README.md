@@ -18,21 +18,21 @@ Uniformly generates a form from a schema with on the fly customizability!
 
 ## Hook props:
 
-| Prop                  | Type             | Required | Description                                                     |
-| --------------------- | ---------------- | -------- | --------------------------------------------------------------- |
-| onSubmit              | `Function`       | false    | triggers on submit button click and returns all values          |
-| onChange              | `Function`       | false    | triggers on input change and returns all values                 |
-| onBlur                | `Function`       | false    | triggers on input blur and returns all values                   |
-| schema                | `Object`         | true     | schema based off what form is generated from                    |
-| initialValues         | `Object`         | null     | maps the initial values to schema                               |
-| featureFlags          | `Object`         | null     | just a object of feature flags                                  |
-| validateInitialValues | `boolean`        | false    | validates initial values once form loads                        |
-| disabled              | `Boolean || JSX` | false    | disables inputs if true                                         |
-| viewMode              | `Boolean || JSX` | false    | toggles `viewMode` in schema                                    |
-| className             | `String`         | false    | passes css classes down to the main form component              |
-| errorClass            | `String`         | false    | passes css class to error message                               |
-| viewModeFallbackText  | `String`         | "N/A"    | passes fallback `viewMode` text when value is null or undefined |
-| multiForm             | `Boolean`        | false    | allows you to create a multi form                               |
+| Prop                  | Type             | Required | Description                                                                       |
+| --------------------- | ---------------- | -------- | --------------------------------------------------------------------------------- |
+| onSubmit              | `Function`       | false    | triggers on submit button click and returns all values                            |
+| onChange              | `Function`       | false    | triggers on input change and returns all values                                   |
+| onBlur                | `Function`       | false    | triggers on input blur and returns all values                                     |
+| schema                | `Object`         | true     | schema based off what form is generated from                                      |
+| initialValues         | `Object`         | false    | maps the initial values to schema                                                 |
+| featureFlags          | `Object`         | false    | just a object of feature flags                                                    |
+| validateInitialValues | `boolean`        | false    | validates initial values once form loads                                          |
+| disabled              | `Boolean || JSX` | false    | disables inputs if true                                                           |
+| viewMode              | `Boolean || JSX` | false    | toggles `viewMode` in schema                                                      |
+| className             | `String`         | false    | passes css classes down to the main form component                                |
+| errorClass            | `String`         | false    | passes css class to error message                                                 |
+| viewModeFallbackText  | `String`         | false    | passes fallback `viewMode` text when value is null or undefined. Default is "N/A" |
+| multiForm             | `Boolean`        | false    | allows you to create a multi form                                                 |
 
 ## Component Example:
 

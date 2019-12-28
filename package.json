@@ -1,6 +1,6 @@
 {
   "name": "react-uniform-hook",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "private": false,
   "dependencies": {},
   "scripts": {
@@ -51,5 +51,5 @@
     "typescript": "^3.7.4"
   },
   "main": "dist/index.js",
-  "typings": "dist/*.d.ts"
+  "typings": "dist/index.d.ts"
 }

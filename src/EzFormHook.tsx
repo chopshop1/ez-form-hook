@@ -236,7 +236,7 @@ export const EzFormHook = ({
             value={formValues[formIndex][inputKey]}
             aria-describedby={`${inputKey}${formIndex}_error`}
             id={inputKey + formIndex}
-            data-test={multiForm ? `${inputKey}-input` : `${inputKey}-${formIndex}-input`}
+            data-test={multiForm ? `${inputKey}-${formIndex}-input` : `${inputKey}-input`}
             {...removeKeys(input, omitArray)}
           />
           {input.appendHtml}
@@ -250,7 +250,7 @@ export const EzFormHook = ({
         <div
           className={`${inputKey in errors[formIndex] ? "EzForm-error" : ""} ${errorClass ? errorClass : ""}`}
           id={`${inputKey}${formIndex}_error`}
-          data-test={multiForm ? `${inputKey}-error` : `${inputKey}-${formIndex}-error`}
+          data-test={multiForm ? `${inputKey}-${formIndex}-error` : `${inputKey}-error`}
         >
           {errors[formIndex][inputKey]}
         </div>
@@ -259,7 +259,7 @@ export const EzFormHook = ({
     returnObject.label = typeof input.label === "string" ? (
       <label
         htmlFor={inputKey}
-        data-test={multiForm ? `${inputKey}-label` : `${inputKey}-${formIndex}-label`}
+        data-test={multiForm ? `${inputKey}-${formIndex}-label` : `${inputKey}-label`}
       >
         {input.label}
         {input.required && " *"}

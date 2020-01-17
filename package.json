@@ -1,6 +1,6 @@
 {
   "name": "ez-form-hook",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "dependencies": {},
   "scripts": {
@@ -14,18 +14,6 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.2.8",

@@ -356,8 +356,6 @@ describe("EzForm Test", () => {
     const submitButton = getByText("Submit");
     await fireEvent.click(submitButton);
 
-    console.log(formVals.changeMe, "changne")
-
     expect(formVals.changeMe).toEqual("changed!")
   });
 });

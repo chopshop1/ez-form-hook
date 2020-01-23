@@ -1,5 +1,7 @@
 import { configure, addParameters } from '@storybook/react';
 import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'styles.css'
 
 addParameters({
   docs: {

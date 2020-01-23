@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import "react-json-pretty/themes/monikai.css";
 import { SchemaDoc } from './components/SchemaDoc';
 import { complexSchema } from "./data/complexSchema";
-import 'bootstrap/dist/css/bootstrap.css';
 
 export const ComplexFormComponent = () => {
   const schema = cloneDeep(complexSchema)

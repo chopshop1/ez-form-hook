@@ -3,7 +3,6 @@ import { cloneDeep } from "../cloneDeep";
 import { EzFormHook } from "../EzFormHook";
 import { ezFormWithinEzFormSchema } from "./data/ezFormWithinEzFormSchema";
 import { SchemaDoc } from './components/SchemaDoc';
-import 'bootstrap/dist/css/bootstrap.css';
 
 export const EzFormWithinEzFormComponent = () => {
   const schema = cloneDeep(ezFormWithinEzFormSchema)

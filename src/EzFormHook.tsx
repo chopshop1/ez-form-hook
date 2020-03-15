@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { cloneDeep } from './cloneDeep';
 import { convertToArray } from './convertToArray';
+import { EzFormField } from './EzFormField';
 import { omitArray } from './omitArray';
 import { removeKeys } from './removeKeys';
-import { FunctionalComponentArguments, EzFormHookProps, EzFormInput, EzFormHookReturnValues } from "./types";
-import { EzFormField } from './EzFormField';
+import { EzFormHookProps, EzFormHookReturnValues, EzFormInput, FunctionalComponentArguments } from "./types";
 
 export const EzFormHook = ({
   schema,
@@ -39,14 +39,14 @@ export const EzFormHook = ({
   const [inputs, setInputs] = useState<any>([{}]);
   const [viewMode, setViewMode] = useState(viewModeToggled)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const initFormLength = initialValues.length || 1
     // the || 1 is used for initial values that are not for multiForms
     initForm(initFormLength)
     setFormLength(initFormLength)
   }, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     generateInputs()
     onUpdate && onUpdate(formValues)
   }, [formValues, formLength, viewMode])

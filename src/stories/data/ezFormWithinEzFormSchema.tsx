@@ -58,7 +58,7 @@ const PetForm = (props) => {
               {inputSet.name.html}
               {inputSet.age.html}
               {inputSet.type.html}
-              <button className="btn btn-danger my-auto" type="button" onClick={() => removeForm(i)} disabled={inputs.length == 1}>- Pet</button>
+              <button className="btn btn-danger my-auto mr-2" type="button" onClick={() => removeForm(i)} disabled={inputs.length == 1}>- Pet</button>
               {i == inputs.length - 1 && <button className="btn btn-success  my-auto" type="button" onClick={addForm}>+ Pet</button>}
             </div>
           )

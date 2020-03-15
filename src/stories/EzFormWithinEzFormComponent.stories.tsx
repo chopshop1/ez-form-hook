@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { cloneDeep } from "../cloneDeep";
 import { EzFormHook } from "../EzFormHook";
-import { ezFormWithinEzFormSchema } from "./data/ezFormWithinEzFormSchema";
 import { SchemaDoc } from './components/SchemaDoc';
+import { ezFormWithinEzFormSchema } from "./data/ezFormWithinEzFormSchema";
 
 export const EzFormWithinEzFormComponent = () => {
   const schema = cloneDeep(ezFormWithinEzFormSchema)

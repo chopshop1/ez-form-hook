@@ -269,26 +269,24 @@ export const EzFormHook = ({
       );
 
     returnObject.viewMode = input.viewModeComponent ? (
-      <div className={input.groupClassName}>
+      <>
         {returnObject.label}
         {input.viewModeComponent(formValues[formIndex][inputKey], formValues[formIndex])}
-      </div>
+      </>
     ) : (
         <>
-          <div className={input.groupClassName}>
-            {returnObject.label}
-            <div className={input.viewModeClass}>{_getValueAsString(inputKey, formIndex)}</div>
-          </div>
+          {returnObject.label}
+          <div className={input.viewModeClass}>{_getValueAsString(inputKey, formIndex)}</div>
         </>
       )
 
     returnObject.html =
-      <div className={input.groupClassName}>
+      <>
         {viewMode && returnObject.viewMode}
         {!viewMode && returnObject.label}
         {!viewMode && returnObject.element}
         {!viewMode && returnObject.error}
-      </div>
+      </>
 
     return returnObject;
   }
@@ -328,11 +326,12 @@ export const EzFormHook = ({
     >
       {
         inputs.map((input: any) => (
-          Object.keys(input).map((inputKey: any, index: number) => {
+          Object.keys(input).map((inputKey: any) => {
+            const currentInput = input[inputKey];
             return (
-              <div key={input[inputKey].key + index}> {/* TODO: make unique keys */}
-                {viewMode && input[inputKey].viewMode}
-                {!viewMode && input[inputKey].html}
+              <div className={schema.inputs[inputKey].groupClassName} key={currentInput.key}> {/* TODO: make unique keys */}
+                {viewMode && currentInput.viewMode}
+                {!viewMode && currentInput.html}
               </div>
             );
           })

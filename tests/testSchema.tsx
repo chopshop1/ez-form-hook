@@ -18,7 +18,7 @@ export const testSchema: EzFormSchema = {
       visibleIf: ({ value }) => (value !== "hide me"),
       onBlur: () => null,
       onChange: () => null,
-      onSubmit: () => { },
+      onSubmit: ({ value }) => { return value },
       "data-testid": "name"
     },
     length: {
@@ -32,7 +32,7 @@ export const testSchema: EzFormSchema = {
       required: true,
       type: "select",
       options: [{ label: "true", value: true }, { label: "false", value: false }]
-    },
+    }, 
     textarea: {
       label: "textarea",
       required: true,
@@ -49,13 +49,13 @@ export const testSchema: EzFormSchema = {
       required: false,
       type: "text",
       placeholder: "visibleIf",
-      untracked: true
+      tracked: false
     },
     untracked: {
       label: "untracked",
       required: false,
       type: "text",
-      untracked: 'true',
+      tracked: false,
       placeholder: "visibleIf",
       "data-testid": "untracked"
     },
@@ -78,6 +78,12 @@ export const testSchema: EzFormSchema = {
       label: "change me",
       onChange: () => "changed!",
       "data-testid": "changeMe",
+    },
+    onSubmitOverwrite: {
+      type: "input",
+      label: "onSubmit overwrite",
+      onSubmit: () => "overwrite!",
+      "data-testid": "onSubmitOverwrite",
     }
   }
 };

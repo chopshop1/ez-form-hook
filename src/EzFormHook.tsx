@@ -304,21 +304,23 @@ export const EzFormHook = ({
           for (const index in values) {
             for (let key of Object.keys(schema.inputs)) {
               if (schema.inputs[key].onSubmit) {
-                values[index][key] =
-                  // @ts-ignore its checking if onSubmit function exists  above, but its still failing
-                  schema.inputs[key].onSubmit({
-                    value: values[index][key],
-                    rowValues: values[index],
-                    values,
-                    formIndex: index
-                  });
+                // @ts-ignore its checking if onSubmit function exists  above, but its still failing
+                values[index][key] = schema.inputs[key].onSubmit({
+                  value: values[index][key],
+                  rowValues: values[index],
+                  values,
+                  formIndex: index
+                })
+              }
+              if (schema.inputs[key].tracked == false) {
+                delete values[index][key]
               }
             }
             if (clearFormOnSubmit) {
               initForm()
             }
           }
-          values = multiForm ? formValues : formValues[0]
+          values = multiForm ? values : values[0]
           onSubmit && onSubmit(values)
           schema.onSubmit && schema.onSubmit(values)
         }

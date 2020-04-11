@@ -126,7 +126,8 @@ describe("EzForm Test", () => {
     await fireEvent.click(submitButton);
 
     for (const key of Object.keys(testSchema.inputs)) {
-      if (testSchema.inputs[key].untracked) {
+
+      if (testSchema.inputs[key].tracked == false || testSchema.inputs[key].onSubmit) {
         continue
       }
       expect(formVals[key]).toEqual(testSchema.inputs[key].initialValue || "");
@@ -358,4 +359,22 @@ describe("EzForm Test", () => {
 
     expect(formVals.changeMe).toEqual("changed!")
   });
+
+  it("inputs schema onSubmit. Value should be overwritten onSubmit return", async () => {
+    let formVals: any;
+    const onSubmit = (vals: any) => {
+      formVals = vals;
+    }
+
+    const { getByText, getByTestId } = await render(
+      <TestingComponent schema={testSchema} onSubmit={onSubmit} />
+    );
+    const input = getByTestId(testSchema.inputs.onSubmitOverwrite["data-testid"]);
+    fireEvent.change(input, { target: { value: "validate" } });
+    fireEvent.blur(input);
+    const submitButton = getByText("Submit");
+    await fireEvent.click(submitButton);
+
+    expect(formVals.onSubmitOverwrite).toEqual("overwrite!")
+  })
 });

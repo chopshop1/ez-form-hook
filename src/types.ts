@@ -26,6 +26,7 @@ export type CallbackArguments = {
   rowValues: any
   values: any
   formIndex: number | string
+  event?: any
 }
 
 export type VisibleIf = ({ value, rowValues, values, formIndex }: CallbackArguments) => boolean
@@ -59,8 +60,8 @@ export type EzFormInput = {
   viewModeClass?: string
   viewModeComponent?: Function
   featureFlag?: string
-  onChange?: ({ value, rowValues, values, formIndex }: CallbackArguments) => any
-  onBlur?: ({ value, rowValues, values, formIndex }: CallbackArguments) => any
+  onChange?: ({ value, rowValues, values, formIndex, event }: CallbackArguments) => any
+  onBlur?: ({ value, rowValues, values, formIndex, event }: CallbackArguments) => any
   onSubmit?: ({ value, rowValues, values, formIndex }) => void
 }
 
@@ -74,8 +75,8 @@ export type EzFormHookProps = {
   schema: EzFormSchema
   onSubmit?: (values: objectKeys[] | objectKeys) => any
   onUpdate?: (values: objectKeys[] | objectKeys) => any
-  onChange?: ({ value, rowValues, values, formIndex }: CallbackArguments) => any
-  onBlur?: ({ value, rowValues, values, formIndex }: CallbackArguments) => any
+  onChange?: ({ value, rowValues, values, formIndex, event }: CallbackArguments) => any
+  onBlur?: ({ value, rowValues, values, formIndex, event }: CallbackArguments) => any
   initialValues?: objectKeys
   validateInitialValues?: boolean
   validateOnChange?: boolean

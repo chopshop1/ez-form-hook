@@ -140,7 +140,7 @@ export const EzFormHook = ({
       return returnObject
     }
 
-    const updateFormValues = (inputValue: any) => {
+    const updateFormValues = (inputValue: any, event?: any) => {
       if (schema.inputs[inputKey].untracked) {
         return null
       }
@@ -149,7 +149,7 @@ export const EzFormHook = ({
 
       if (schema.inputs[inputKey].onChange) {
         //@ts-ignore checking if funciton exists above^
-        value = schema.inputs[inputKey].onChange({ value, rowValues: values[formIndex], values, formIndex }) || value
+        value = schema.inputs[inputKey].onChange({ value, rowValues: values[formIndex], values, formIndex, event }) || value
       }
 
       values[formIndex] = { ...values[formIndex], [inputKey]: value }
@@ -173,7 +173,7 @@ export const EzFormHook = ({
         setErrors(tempErrors)
       }
 
-      onChange && onChange({ value, rowValues: values[formIndex], values, formIndex })
+      onChange && onChange({ value, rowValues: values[formIndex], values, formIndex, event })
 
       setFormValues(values);
     }
@@ -197,14 +197,14 @@ export const EzFormHook = ({
     const onInputChange = (event: any) => {
       let inputValue = getInputValue(input, event, input.onChange)
 
-      updateFormValues(inputValue)
+      updateFormValues(inputValue, event)
     };
 
     const onInputBlur = (event: any) => {
       let inputValue = getInputValue(input, event, input.onBlur)
 
-      onBlur && onBlur({ value: inputValue, rowValues: formValues[formIndex], values: formValues, formIndex })
-      updateFormValues(inputValue)
+      onBlur && onBlur({ value: inputValue, rowValues: formValues[formIndex], values: formValues, formIndex, event })
+      updateFormValues(inputValue, event)
     }
 
     if (input.functionalComponent) {

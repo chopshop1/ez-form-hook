@@ -4,7 +4,7 @@ import { convertToArray } from './convertToArray';
 import { EzFormField } from './EzFormField';
 import { omitArray } from './omitArray';
 import { removeKeys } from './removeKeys';
-import { EzFormHookProps, EzFormHookReturnValues, EzFormInput, FunctionalComponentArguments } from "./types";
+import { EzFormHookProps, EzFormHookReturnValues, EzFormInput, EzFormSchema, FunctionalComponentArguments } from "./types";
 
 export const EzFormHook = ({
   schema,
@@ -30,6 +30,7 @@ export const EzFormHook = ({
   submitButtonText = "Submit",
   submitButton = <button type="submit" className={submitButtonClass} disabled={disabled}>{submitButtonText}</button>
 }: EzFormHookProps): EzFormHookReturnValues => {
+  const [ezSchema, setEzSchema] = useState(cloneDeep(schema))
   const [formInitialValues, setFormInitialValues] = useState<any>(cloneDeep(initialValues))
   const [formReady, setFormReady] = useState<boolean>(false);
   const [formLength, setFormLength] = useState<number>(0);
@@ -50,6 +51,27 @@ export const EzFormHook = ({
     generateInputs()
     onUpdate && onUpdate(formValues)
   }, [formValues, formLength, viewMode])
+
+  const updateSchema = (newSchema: EzFormSchema) => {
+    const oldKeys = Object.keys(schema.inputs)
+    const newKeys = Object.keys(newSchema.inputs)
+    const removedKeys = oldKeys.filter((o) => newKeys.indexOf(o) === -1);
+
+    setEzSchema(newSchema)
+    generateInputs()
+
+    const newValues = formValues.map((vals) => {
+      const updatedVals = vals
+      for (const key of removedKeys) {
+        if (key in updatedVals) {
+          delete updatedVals[key]
+        }
+      }
+      return updatedVals
+    })
+
+    setFormValues(newValues)
+  }
 
   const initForm = async (initFormLength?: number) => {
     let initialFormValues: any = [] // TODO: type correctly
@@ -78,7 +100,7 @@ export const EzFormHook = ({
 
     for (let formIndex = 0; formIndex < formLength; formIndex++) {
       inputs.push({})
-      for (const inputKey of Object.keys(schema.inputs)) {
+      for (const inputKey of Object.keys(ezSchema.inputs)) {
         inputs[formIndex][inputKey] = inputGenerator(inputKey, formIndex)
       }
     }
@@ -91,8 +113,8 @@ export const EzFormHook = ({
     let values: any = {}
     let tempInitialValues = convertToArray(formInitialValues)
 
-    for (const inputKey of Object.keys(schema.inputs)) {
-      if (schema.inputs[inputKey].untracked) {
+    for (const inputKey of Object.keys(ezSchema.inputs)) {
+      if (ezSchema.inputs[inputKey].untracked) {
         //skips untracked inputs
         continue
       }
@@ -100,7 +122,7 @@ export const EzFormHook = ({
 
       values[inputKey] =
         initialValueProp
-        || schema.inputs[inputKey].initialValue
+        || ezSchema.inputs[inputKey].initialValue
         || ''
     }
 
@@ -119,11 +141,11 @@ export const EzFormHook = ({
   }
 
   const inputGenerator = (inputKey: string, formIndex: number) => {
-    const input: EzFormInput = schema.inputs[inputKey];
+    const input: EzFormInput = ezSchema.inputs[inputKey];
     const reactInputKey: string = `${inputKey}-${formIndex}`
-    const visible: boolean | undefined = input.visibleIf && !input.visibleIf({ value: formValues[formIndex][inputKey], rowValues: formValues[formIndex], values: formValues, formIndex })
-    const featureFlag = featureFlags && input.featureFlag && !featureFlags[input.featureFlag]
-    const InputComponent = input.customComponent || EzFormField
+    const visible: boolean | undefined = input?.visibleIf && !input?.visibleIf({ value: formValues[formIndex][inputKey], rowValues: formValues[formIndex], values: formValues, formIndex })
+    const featureFlag = featureFlags && input?.featureFlag && !featureFlags[input?.featureFlag]
+    const InputComponent = input?.customComponent || EzFormField
 
     const returnObject: any = {
       key: reactInputKey,
@@ -141,15 +163,15 @@ export const EzFormHook = ({
     }
 
     const updateFormValues = (inputValue: any, event?: any) => {
-      if (schema.inputs[inputKey].untracked) {
+      if (ezSchema.inputs[inputKey].untracked) {
         return null
       }
       let values = [...formValues];
       let value = inputValue
 
-      if (schema.inputs[inputKey].onChange) {
+      if (ezSchema.inputs[inputKey].onChange) {
         //@ts-ignore checking if funciton exists above^
-        value = schema.inputs[inputKey].onChange({ value, rowValues: values[formIndex], values, formIndex, event }) || value
+        value = ezSchema.inputs[inputKey].onChange({ value, rowValues: values[formIndex], values, formIndex, event }) || value
       }
 
       values[formIndex] = { ...values[formIndex], [inputKey]: value }
@@ -181,7 +203,7 @@ export const EzFormHook = ({
     const getInputValue = (input: EzFormInput, event: any, changeMod: any) => {
       let inputVal: any
 
-      if (event.target && input.type === "checkbox") {
+      if (event.target && input?.type === "checkbox") {
         inputVal = event.target.checked
       } else if (event.target && "value" in event.target) {
         inputVal = event.target.value
@@ -195,19 +217,19 @@ export const EzFormHook = ({
     }
 
     const onInputChange = (event: any) => {
-      let inputValue = getInputValue(input, event, input.onChange)
+      let inputValue = getInputValue(input, event, input?.onChange)
 
       updateFormValues(inputValue, event)
     };
 
     const onInputBlur = (event: any) => {
-      let inputValue = getInputValue(input, event, input.onBlur)
+      let inputValue = getInputValue(input, event, input?.onBlur)
 
       onBlur && onBlur({ value: inputValue, rowValues: formValues[formIndex], values: formValues, formIndex, event })
       updateFormValues(inputValue, event)
     }
 
-    if (input.functionalComponent) {
+    if (input?.functionalComponent) {
       const params: FunctionalComponentArguments = {
         updateFormValues: (value: any) => {
           const vals = value.rowValues || value
@@ -222,15 +244,15 @@ export const EzFormHook = ({
           setHasNestedErrors(errorState)
         }
       }
-      returnObject.element = input.functionalComponent(params)
+      returnObject.element = input?.functionalComponent(params)
     } else {
       returnObject.element = (
         <>
-          {input.prependHtml}
+          {input?.prependHtml}
           <InputComponent
             key={reactInputKey}
             name={inputKey}
-            type={input.type}
+            type={input?.type}
             onChange={onInputChange}
             onBlur={onInputBlur}
             value={formValues[formIndex][inputKey]}
@@ -239,13 +261,13 @@ export const EzFormHook = ({
             data-test={multiForm ? `${inputKey}-${formIndex}-input` : `${inputKey}-input`}
             {...removeKeys(input, omitArray)}
           />
-          {input.appendHtml}
+          {input?.appendHtml}
         </>
       );
     }
 
-    returnObject.error = errors[formIndex][inputKey] && input.errorComponent ? (
-      input.errorComponent({ error: errors[formIndex], errors: errors[formIndex], formIndex, errorId: `${inputKey}${formIndex}_error` })
+    returnObject.error = errors[formIndex][inputKey] && input?.errorComponent ? (
+      input?.errorComponent({ error: errors[formIndex], errors: errors[formIndex], formIndex, errorId: `${inputKey}${formIndex}_error` })
     ) : (
         <div
           className={`${inputKey in errors[formIndex] ? "EzForm-error" : ""} ${errorClass ? errorClass : ""}`}
@@ -256,40 +278,41 @@ export const EzFormHook = ({
         </div>
       );
 
-    returnObject.label = typeof input.label === "string" ? (
+    returnObject.label = typeof input?.label === "string" ? (
       <label
         htmlFor={inputKey}
         data-test={multiForm ? `${inputKey}-${formIndex}-label` : `${inputKey}-label`}
       >
-        {input.label}
-        {input.required && " *"}
+        {input?.label}
+        {input?.required && " *"}
       </label>
     ) : (
-        input.label
+        input?.label
       );
 
-    returnObject.viewMode = input.viewModeComponent ? (
+    returnObject.viewMode = input?.viewModeComponent ? (
       <>
         {returnObject.label}
-        {input.viewModeComponent(formValues[formIndex][inputKey], formValues[formIndex])}
+        {input?.viewModeComponent(formValues[formIndex][inputKey], formValues[formIndex])}
       </>
     ) : (
         <>
           {returnObject.label}
-          <div className={input.viewModeClass}>{_getValueAsString(inputKey, formIndex)}</div>
+          <div className={input?.viewModeClass}>{_getValueAsString(inputKey, formIndex)}</div>
         </>
       )
 
     returnObject.html =
       <>
-        {viewMode && returnObject.viewMode}
-        {!viewMode && returnObject.label}
-        {!viewMode && returnObject.element}
-        {!viewMode && returnObject.error}
+        {viewMode && returnObject?.viewMode}
+        {!viewMode && returnObject?.label}
+        {!viewMode && returnObject?.element}
+        {!viewMode && returnObject?.error}
       </>
 
     return returnObject;
   }
+
 
   const form = (
     <form
@@ -302,17 +325,17 @@ export const EzFormHook = ({
           let values = cloneDeep(formValues);
 
           for (const index in values) {
-            for (let key of Object.keys(schema.inputs)) {
-              if (schema.inputs[key].onSubmit) {
+            for (let key of Object.keys(ezSchema.inputs)) {
+              if (ezSchema.inputs[key].onSubmit) {
                 // @ts-ignore its checking if onSubmit function exists  above, but its still failing
-                values[index][key] = schema.inputs[key].onSubmit({
+                values[index][key] = ezSchema.inputs[key].onSubmit({
                   value: values[index][key],
                   rowValues: values[index],
                   values,
                   formIndex: index
                 })
               }
-              if (schema.inputs[key].tracked == false) {
+              if (ezSchema.inputs[key].tracked == false) {
                 delete values[index][key]
               }
             }
@@ -322,7 +345,7 @@ export const EzFormHook = ({
           }
           values = multiForm ? values : values[0]
           onSubmit && onSubmit(values)
-          schema.onSubmit && schema.onSubmit(values)
+          ezSchema.onSubmit && ezSchema.onSubmit(values)
         }
       }}
     >
@@ -331,9 +354,9 @@ export const EzFormHook = ({
           Object.keys(input).map((inputKey: any) => {
             const currentInput = input[inputKey];
             return (
-              <div className={schema.inputs[inputKey].groupClassName} key={currentInput.key}> {/* TODO: make unique keys */}
-                {viewMode && currentInput.viewMode}
-                {!viewMode && currentInput.html}
+              <div className={ezSchema.inputs[inputKey]?.groupClassName} key={currentInput?.key}> {/* TODO: make unique keys */}
+                {viewMode && currentInput?.viewMode}
+                {!viewMode && currentInput?.html}
               </div>
             );
           })
@@ -349,8 +372,8 @@ export const EzFormHook = ({
     if (validation && validation[inputKey]) {
       return validation[inputKey](validationParams)
     }
-    if (input.validate) {
-      return input.validate(validationParams)
+    if (input?.validate) {
+      return input?.validate(validationParams)
     }
   }
 
@@ -360,7 +383,7 @@ export const EzFormHook = ({
 
     for (const formIndex in initialFormValues) {
       for (const inputKey in initialFormValues[formIndex]) {
-        const input: EzFormInput = schema.inputs[inputKey];
+        const input: EzFormInput = ezSchema.inputs[inputKey];
 
         const validationValue = validateInput(input, initialFormValues, formIndex, inputKey)
 
@@ -412,7 +435,7 @@ export const EzFormHook = ({
   const clearForm = () => {
     setFormInitialValues([{}])
     let tempFormValues: any = [{}]
-    for (const inputKey of Object.keys(schema.inputs)) {
+    for (const inputKey of Object.keys(ezSchema.inputs)) {
       tempFormValues[0][inputKey] = ''
     }
 
@@ -433,6 +456,8 @@ export const EzFormHook = ({
     formValues,
     errors,
     formLength,
+    ezSchema,
+    updateSchema,
     addForm,
     removeForm,
     resetForm,

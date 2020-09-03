@@ -7,11 +7,23 @@ import { testSchema, testSchema2, testSchemaInitialValues } from "./testSchema";
 afterEach(cleanup);
 
 const TestingComponent = (props: any) => {
-  const { form, clearForm, resetForm, addForm, removeForm } = EzFormHook({ ...props })
+  const { form, clearForm, resetForm, addForm, removeForm, updateSchema, ezSchema } = EzFormHook({ ...props })
+
+  const addNameInput = () => {
+    updateSchema(props.schema)
+  }
+
+  const removeNameInput = () => {
+    const tempSchema = ezSchema
+    delete ezSchema.inputs.name
+    updateSchema(tempSchema)
+  }
 
   return (
     <>
       {form}
+      <button onClick={addNameInput}>add name input</button>
+      <button onClick={removeNameInput}>remove name input</button>
       {
         props.showClearButtons &&
         <>
@@ -44,7 +56,7 @@ describe("EzForm Test", () => {
     );
 
     expect(container.querySelector("input")).toBe(null);
-    expect(container.querySelector("button")).toBe(null);
+    expect(container.querySelector("button[type='submit']")).toBe(null);
     expect(getByText(testSchemaInitialValues.textarea)).toBeDefined();
   });
 
@@ -376,5 +388,39 @@ describe("EzForm Test", () => {
     await fireEvent.click(submitButton);
 
     expect(formVals.onSubmitOverwrite).toEqual("overwrite!")
+  })
+
+  it("updateSchema updates Schema", async () => {
+    let formVals: any = {};
+    const onSubmit = (vals: any) => {
+      formVals = vals;
+    }
+
+    const { getByText, queryByText } = await render(
+      <TestingComponent schema={testSchema} onSubmit={onSubmit} />
+    );
+
+    let inputLabel: any = getByText(testSchema.inputs.name.label as string)
+
+    expect(inputLabel).toBeDefined()
+    const submitButton = getByText("Submit");
+
+    const removeNameInputButton = getByText("remove name input")
+    fireEvent.click(removeNameInputButton)
+    inputLabel = queryByText(testSchema.inputs.name.label as string)
+
+    await fireEvent.click(submitButton);
+
+    expect(inputLabel).toBeNull()
+    expect(formVals.hasOwnProperty("name")).toBeFalsy()
+
+    const addNameInputButton = getByText("add name input")
+    fireEvent.click(addNameInputButton)
+    inputLabel = queryByText(testSchema.inputs.name.label as string)
+
+    expect(inputLabel).toBeDefined()
+
+    await fireEvent.click(submitButton);
+    expect(formVals.hasOwnProperty("name")).toBeTruthy()
   })
 });

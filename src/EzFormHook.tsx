@@ -450,6 +450,14 @@ export const EzFormHook = ({
     return String(viewModeFallbackText);
   };
 
+  const updateFormValues = (values) => {
+    if (Array.isArray(values)) {
+      setFormValues(values)
+    } else {
+      setFormValues([values])
+    }
+  }
+
   return {
     inputs,
     form,
@@ -457,6 +465,7 @@ export const EzFormHook = ({
     errors,
     formLength,
     ezSchema,
+    updateFormValues,
     updateSchema,
     addForm,
     removeForm,
@@ -466,5 +475,5 @@ export const EzFormHook = ({
     viewModeState: viewMode,
     formReady,
     submitButton: !viewMode && submitButton
-  };
-};
+  }
+}

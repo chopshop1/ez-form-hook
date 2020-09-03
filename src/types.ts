@@ -103,6 +103,7 @@ export type EzFormHookReturnValues = {
   errors: tMap<string>[] | tMap<string>
   formLength: number
   ezSchema: EzFormSchema
+  updateFormValues: (values: object[] | object) => void
   updateSchema: (newSchema: EzFormSchema) => void
   addForm: () => void
   removeForm: (removeIndex?: number) => void

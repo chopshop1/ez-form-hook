@@ -18,6 +18,7 @@ export type FunctionalComponentArguments = {
   inputKey: string
   initialValues: any
   value: any
+  formValues: any
   formIndex: number
 }
 

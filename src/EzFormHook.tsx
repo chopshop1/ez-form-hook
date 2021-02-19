@@ -238,11 +238,12 @@ export const EzFormHook = ({
         onBlur: onInputBlur,
         inputKey,
         initialValues,
+        formValues,
         formIndex,
         value: formValues[formIndex][inputKey],
         nestedErrorsManager: (errorState: boolean) => {
           setHasNestedErrors(errorState)
-        }
+        },
       }
       returnObject.element = input?.functionalComponent(params)
     } else {
@@ -259,6 +260,7 @@ export const EzFormHook = ({
             aria-describedby={`${inputKey}${formIndex}_error`}
             id={inputKey + formIndex}
             data-test={multiForm ? `${inputKey}-${formIndex}-input` : `${inputKey}-input`}
+            formValues={formValues}
             {...removeKeys(input, omitArray)}
           />
           {input?.appendHtml}
